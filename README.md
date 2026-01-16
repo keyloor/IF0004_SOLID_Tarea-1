@@ -19,14 +19,12 @@
 En esta tarea se analizan diferentes ejemplos de código en Java que violan los principios SOLID.  
 Cada caso cuenta con:
 
-- **Código original**, el cual presenta la violación del principio.
+- **Código original**, ubicado en la carpeta `bad` el cual presenta la violación del principio.
 - **Código refactorizado**, ubicado dentro de la carpeta `good`, donde se aplica correctamente el principio correspondiente.
-
-El objetivo es mejorar el diseño orientado a objetos sin alterar la funcionalidad original del programa.
 
 ---
 
-## Áreas donde el código viola los principios SOLID
+## Áreas donde el código viola los principios SOLID >
 
 ### 1. Principio de Responsabilidad Única (SRP)
 
