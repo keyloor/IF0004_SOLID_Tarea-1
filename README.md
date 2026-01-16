@@ -14,69 +14,55 @@
 
 ---
 
-## Descripción
+## Descripción General
 
-En esta tarea se analizó y refactorizó código Java que violaba los principios de diseño **SOLID**, con el objetivo de mejorar la calidad del diseño orientado a objetos, manteniendo la funcionalidad original del sistema.
+En esta tarea se analizan diferentes ejemplos de código en Java que violan los principios SOLID.  
+Cada caso cuenta con:
 
-Cada principio fue trabajado de forma independiente, separando el **código original (bad)** del **código refactorizado (fixed)**, aplicando buenas prácticas como **KISS**, **DRY** y **YAGNI**.
+- **Código original**, el cual presenta la violación del principio.
+- **Código refactorizado**, ubicado dentro de la carpeta `good`, donde se aplica correctamente el principio correspondiente.
+
+El objetivo es mejorar el diseño orientado a objetos sin alterar la funcionalidad original del programa.
 
 ---
 
-## Análisis de Violaciones y Refactorización
+## Áreas donde el código viola los principios SOLID
 
 ### 1. Principio de Responsabilidad Única (SRP)
 
-La clase `UserDataManager` manejaba múltiples responsabilidades:
-- Validación de datos del usuario  
-- Procesamiento de información  
-- Ejecución como clase principal (`main`)  
-- Salida de información  
+La clase `UserDataManager` está manejando los datos de usuario como la validación y además está manejando varios procesos, y esa misma clase está funcionando como clase `Main` dando la salida.
 
-**Solución:**  
-Se separaron las responsabilidades en distintas clases, asegurando que cada una tenga un único motivo de cambio, cumpliendo así con el SRP.
+Lo que se realizó fue separar las clases para que no haga todo una sola clase.
 
 ---
 
 ### 2. Principio Abierto/Cerrado (OCP)
 
-Para agregar una nueva forma geométrica era necesario modificar la lógica existente mediante estructuras `if-else`, lo que violaba el principio de estar abierto a extensión pero cerrado a modificación.
+Para añadir otra forma había que añadir otro `if-else` en la clase.
 
-**Solución:**  
-Se creó una clase abstracta `Shape` con el método `calculateArea()`, el cual es implementado por cada forma concreta. De esta manera, se pueden agregar nuevas formas sin modificar el código existente.
+Lo que se hizo fue darles un método `calculateArea()` a cada clase de formas y extenderlas de la clase `Shape` para llamar al método sin tener en cuenta la forma.
 
 ---
 
 ### 3. Principio de Sustitución de Liskov (LSP)
 
-La clase `SquareOriginal` heredaba de `RectangleOriginal`, pero alteraba el comportamiento esperado. Al usar los métodos `setWidth()` y `setHeight()`, el cuadrado modificaba ambos valores simultáneamente, produciendo resultados incorrectos en el cálculo del área.
+`SquareOriginal` hereda de `RectangleOriginal`, pero no se comporta como un rectángulo.  
+Cuando se usan `setWidth()` y `setHeight()`, el cuadrado cambia ambos valores, lo que da un área diferente a la que debería dar.
 
-Esto viola el LSP, ya que un objeto de la clase hija no puede sustituir correctamente a uno de la clase padre.
-
-**Solución:**  
-Se refactorizó el diseño creando una superclase común `Shape`, permitiendo que `Rectangle` y `Square` sean independientes y correctamente sustituibles sin romper el comportamiento esperado.
+Esto viola Liskov porque la clase hija no puede usarse en lugar de la clase padre sin causar errores.
 
 ---
 
 ### 4. Principio de Segregación de Interfaces (ISP)
 
-La interfaz `WorkerOriginal` obligaba a las clases a implementar métodos que no eran necesarios para su funcionalidad, como en el caso de la clase `Robot`.
+La interfaz `WorkerOriginal` está dando métodos que no necesitan algunas clases, lo cual no tiene sentido.
 
-**Solución:**  
-La interfaz fue dividida en interfaces más pequeñas y específicas, de modo que cada clase implemente únicamente los métodos que realmente necesita.
-
----
-
-### 5. Principio de Inversión de Dependencias (DIP)
-
-La clase `CarOriginal` dependía directamente de la clase concreta `EngineOriginal`, generando un alto acoplamiento.
-
-**Solución:**  
-Se creó una interfaz `Engine`, la cual es inyectada por parámetro en la clase `Car`. Esto permite desacoplar el código y facilitar la extensión mediante diferentes tipos de motores sin modificar la clase `Car`.
+Lo que se hizo fue dividir la interfaz en interfaces específicas para que las clases no tengan métodos que no necesitan.
 
 ---
 
-## Conclusión
+### 5. Dependency Inversion Principle (DIP)
 
-La refactorización permitió aplicar correctamente los cinco principios SOLID, mejorando la modularidad, mantenibilidad y extensibilidad del sistema, sin afectar su funcionamiento original.
+`CarOriginal` depende al 100% de `EngineOriginal`.
 
-El proyecto demuestra un diseño orientado a objetos con alta cohesión, bajo acoplamiento y uso adecuado de abstracciones.
+Lo que se hizo fue crear un `Engine` que se pasa por parámetros en la clase `CarOriginal`, reduciendo el acoplamiento.
