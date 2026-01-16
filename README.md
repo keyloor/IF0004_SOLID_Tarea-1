@@ -1,51 +1,82 @@
-- Tarea #1 Principios de diseño 
+# Tarea #1 – Principios de Diseño (SOLID)
 
-- Estudiantes: 
+## Información General
 
-    Sebastián Marín Fernández C24530,
-    Juan Pablo Jiménez Vargas C5G523,
-    Keylor Barrantes Gomez C5D024.
+**Curso:** IF-0004 – Desarrollo de Software II  
+**Universidad:** Universidad de Costa Rica – Sede Occidente  
+**Profesora:** Angélica María Ulate Céspedes  
+**Fecha de entrega:** 19 de enero de 2025  
 
-Universidad de Costa Rica, Sede Occidente 
+### Estudiantes
+- Sebastián Marín Fernández — C24530  
+- Juan Pablo Jiménez Vargas — C5G523  
+- Keylor Barrantes Gómez — C5D024  
 
-    IF-0004 Desarrollo de Software ll 
+---
 
-Profesora: Angélica María Ulate Céspedes 
+## Descripción
 
-        19 de enero de 2025 
+En esta tarea se analizó y refactorizó código Java que violaba los principios de diseño **SOLID**, con el objetivo de mejorar la calidad del diseño orientado a objetos, manteniendo la funcionalidad original del sistema.
 
- 
+Cada principio fue trabajado de forma independiente, separando el **código original (bad)** del **código refactorizado (fixed)**, aplicando buenas prácticas como **KISS**, **DRY** y **YAGNI**.
 
-Áreas donde el código viola los siguientes principios:
+---
 
- 
+## Análisis de Violaciones y Refactorización
 
-1. Principios de Responsabilidad única: 
+### 1. Principio de Responsabilidad Única (SRP)
 
-La clase userDataManager está manejando los datos de usuario como la validación y además está manejando varios procesos y esa misma clase está funcionando como clase Main dando la salida (Lo que se realizo fue separar las clases para que no haga todo una sola clase). 
+La clase `UserDataManager` manejaba múltiples responsabilidades:
+- Validación de datos del usuario  
+- Procesamiento de información  
+- Ejecución como clase principal (`main`)  
+- Salida de información  
 
- 
+**Solución:**  
+Se separaron las responsabilidades en distintas clases, asegurando que cada una tenga un único motivo de cambio, cumpliendo así con el SRP.
 
-2. Principio de Abierto/Cerrado: 
+---
 
-Para añadir otra forma había que añadir otro if-else en la clase (Lo que se hizo fue darles un método de calcularArea() a cada clase de formas y extenderlas de la clase Shape para llamar al método sin tener en cuenta la forma). 
+### 2. Principio Abierto/Cerrado (OCP)
 
- 
+Para agregar una nueva forma geométrica era necesario modificar la lógica existente mediante estructuras `if-else`, lo que violaba el principio de estar abierto a extensión pero cerrado a modificación.
 
-3. Principios de Sustitución de Liskov: 
+**Solución:**  
+Se creó una clase abstracta `Shape` con el método `calculateArea()`, el cual es implementado por cada forma concreta. De esta manera, se pueden agregar nuevas formas sin modificar el código existente.
 
-SquareOriginal hereda de RectangleOriginal, pero no se comporta como un rectángulo. Cuando se usan setWidth() y setHeight(), el cuadrado cambia ambos valores, lo que da un área diferente a la que deberia dar. Esto viola Liskov porque la clase hija no puede usarse en lugar de la clase padre sin causar errores. 
+---
 
- 
+### 3. Principio de Sustitución de Liskov (LSP)
 
-4. Principios de Segregación de interfaces: 
+La clase `SquareOriginal` heredaba de `RectangleOriginal`, pero alteraba el comportamiento esperado. Al usar los métodos `setWidth()` y `setHeight()`, el cuadrado modificaba ambos valores simultáneamente, produciendo resultados incorrectos en el cálculo del área.
 
-La interfaz WorkerOriginal está dando métodos que no necesitas las clases sin sentido (Lo que se hizo fue dividir la interfaz en interfaces específicas para que las clases no tengan metodos que no necesitan). 
+Esto viola el LSP, ya que un objeto de la clase hija no puede sustituir correctamente a uno de la clase padre.
 
- 
+**Solución:**  
+Se refactorizó el diseño creando una superclase común `Shape`, permitiendo que `Rectangle` y `Square` sean independientes y correctamente sustituibles sin romper el comportamiento esperado.
 
-5. Dependency Inversion Principle: 
+---
 
-CarOriginal depende al 100% de EngineOriginal (Lo que se hizo fue crear un Engine por parámetros en la clase CarOriginal). 
+### 4. Principio de Segregación de Interfaces (ISP)
 
- 
+La interfaz `WorkerOriginal` obligaba a las clases a implementar métodos que no eran necesarios para su funcionalidad, como en el caso de la clase `Robot`.
+
+**Solución:**  
+La interfaz fue dividida en interfaces más pequeñas y específicas, de modo que cada clase implemente únicamente los métodos que realmente necesita.
+
+---
+
+### 5. Principio de Inversión de Dependencias (DIP)
+
+La clase `CarOriginal` dependía directamente de la clase concreta `EngineOriginal`, generando un alto acoplamiento.
+
+**Solución:**  
+Se creó una interfaz `Engine`, la cual es inyectada por parámetro en la clase `Car`. Esto permite desacoplar el código y facilitar la extensión mediante diferentes tipos de motores sin modificar la clase `Car`.
+
+---
+
+## Conclusión
+
+La refactorización permitió aplicar correctamente los cinco principios SOLID, mejorando la modularidad, mantenibilidad y extensibilidad del sistema, sin afectar su funcionamiento original.
+
+El proyecto demuestra un diseño orientado a objetos con alta cohesión, bajo acoplamiento y uso adecuado de abstracciones.
